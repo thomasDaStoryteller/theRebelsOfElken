@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Quest, Investment, QuestOutcome } from "../types";
+import { usePassword } from "../PasswordContext";
 import { ChevronDown, ChevronUp, Coins, Users, Eye, Heart } from "lucide-react";
 
 interface QuestCardProps {
@@ -19,7 +20,11 @@ export const QuestCard: React.FC<QuestCardProps> = ({
   availableResources = 0,
   isResolving = false,
 }) => {
+  const { isAuthenticated } = usePassword();
   const [expanded, setExpanded] = useState(false);
+  
+  // Only show GM details if authenticated
+  const canShowGMDetails = isGMView && isAuthenticated;
   const [investmentsExpanded, setInvestmentsExpanded] = useState(false);
   const [selectedInvestments, setSelectedInvestments] = useState<Investment[]>(
     []
@@ -114,7 +119,7 @@ export const QuestCard: React.FC<QuestCardProps> = ({
 
       <div className="quest-hook">{quest.hook}</div>
 
-      {isGMView && (
+      {canShowGMDetails && (
         <button
           className="expand-button"
           onClick={() => setExpanded(!expanded)}
@@ -124,7 +129,7 @@ export const QuestCard: React.FC<QuestCardProps> = ({
         </button>
       )}
 
-      {expanded && isGMView && (
+      {expanded && canShowGMDetails && (
         <div className="quest-gm-details">
           <div className="quest-effects">
             <div className="effect-section">
