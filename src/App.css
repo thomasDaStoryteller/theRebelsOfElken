@@ -1,13 +1,13 @@
 /* CSS Custom Properties for theming */
 :root {
-  /* Custom color palette */
+  /* Custom color palette - these will be overridden by theme system */
   --color-cream: #dbca9a;
   --color-bronze: #c08b51;
   --color-rust: #a7623c;
   --color-forest: #34544f;
   --color-slate: #786f5d;
 
-  /* Light theme colors */
+  /* Light theme colors - these will be overridden by theme system */
   --bg-primary: linear-gradient(
     135deg,
     var(--color-forest) 0%,
@@ -53,14 +53,14 @@
   --transition-normal: 200ms ease;
   --transition-slow: 300ms ease;
 
-  /* Metric colors using custom palette */
+  /* Metric colors using custom palette - these will be overridden by theme system */
   --metric-hope: var(--color-cream);
   --metric-secrecy: var(--color-slate);
   --metric-unity: var(--color-bronze);
   --metric-oppression: var(--color-rust);
   --metric-resources: var(--color-forest);
 
-  /* Status colors using custom palette */
+  /* Status colors using custom palette - these will be overridden by theme system */
   --status-success: var(--color-forest);
   --status-warning: var(--color-bronze);
   --status-error: var(--color-rust);
@@ -68,34 +68,7 @@
   --status-neutral: var(--color-slate);
 }
 
-/* Dark theme */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-primary: linear-gradient(135deg, #1a2a28 0%, #2d2a24 100%);
-    --bg-secondary: rgba(52, 84, 79, 0.95);
-    --bg-tertiary: rgba(52, 84, 79, 0.3);
-    --bg-card: #1a2a28;
-    --bg-glass: rgba(52, 84, 79, 0.3);
-
-    --text-primary: #f5f0e8;
-    --text-secondary: #e8ddd4;
-    --text-muted: #d4c9b8;
-    --text-inverse: #2d1b1b;
-
-    --border-primary: rgba(219, 202, 154, 0.2);
-    --border-secondary: rgba(167, 98, 60, 0.3);
-    --border-focus: var(--color-cream);
-
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
-      0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
-      0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3),
-      0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.3);
-  }
-}
+/* Dark theme - removed in favor of theme system */
 
 /* Reset and base styles */
 *,
