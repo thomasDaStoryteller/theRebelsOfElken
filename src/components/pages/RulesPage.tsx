@@ -220,3 +220,4 @@ export const RulesPage: React.FC = () => {
   );
 };
 
+
