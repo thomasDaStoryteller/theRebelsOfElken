@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Quest, Investment, QuestOutcome } from "../types";
+import { usePassword } from "../PasswordContext";
 import { ChevronDown, ChevronUp, Coins, Users, Eye, Heart } from "lucide-react";
 
 interface QuestCardProps {
@@ -9,6 +10,8 @@ interface QuestCardProps {
   onResolve?: (outcome: QuestOutcome, notes?: string) => void;
   availableResources?: number;
   isResolving?: boolean;
+  onSelect?: () => void;
+  isSelected?: boolean;
 }
 
 export const QuestCard: React.FC<QuestCardProps> = ({
@@ -18,8 +21,14 @@ export const QuestCard: React.FC<QuestCardProps> = ({
   onResolve,
   availableResources = 0,
   isResolving = false,
+  onSelect,
+  isSelected = false,
 }) => {
+  const { isAuthenticated } = usePassword();
   const [expanded, setExpanded] = useState(false);
+
+  // Only show GM details if authenticated
+  const canShowGMDetails = isGMView && isAuthenticated;
   const [investmentsExpanded, setInvestmentsExpanded] = useState(false);
   const [selectedInvestments, setSelectedInvestments] = useState<Investment[]>(
     []
@@ -114,7 +123,17 @@ export const QuestCard: React.FC<QuestCardProps> = ({
 
       <div className="quest-hook">{quest.hook}</div>
 
-      {isGMView && (
+      {onSelect && !isResolving && (
+        <button
+          className={`select-mission-button ${isSelected ? "selected" : ""}`}
+          onClick={onSelect}
+          aria-pressed={isSelected}
+        >
+          {isSelected ? "✓ Selected" : "Select Mission"}
+        </button>
+      )}
+
+      {canShowGMDetails && (
         <button
           className="expand-button"
           onClick={() => setExpanded(!expanded)}
@@ -124,8 +143,25 @@ export const QuestCard: React.FC<QuestCardProps> = ({
         </button>
       )}
 
-      {expanded && isGMView && (
+      {expanded && canShowGMDetails && (
         <div className="quest-gm-details">
+          <div className="quest-availability">
+            <h4>Availability Requirements:</h4>
+            <div className="availability-requirements">
+              <span className="availability-tag">
+                Oppression: {quest.availabilityOppression}
+              </span>
+              <span className="availability-tag">
+                {quest.availabilitySecondary.track === "S"
+                  ? "Secrecy"
+                  : quest.availabilitySecondary.track === "H"
+                  ? "Hope"
+                  : "Unity"}
+                : {quest.availabilitySecondary.requirement}
+              </span>
+            </div>
+          </div>
+
           <div className="quest-effects">
             <div className="effect-section">
               <h4>Success Effects:</h4>

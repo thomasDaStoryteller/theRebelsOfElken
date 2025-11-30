@@ -7,20 +7,28 @@ interface QuestDrawerProps {
   availableQuests: Quest[];
   drawnQuests?: Quest[];
   onDrawQuests: () => void;
+  onDrawSingleQuest?: () => void; // For GM view: draw 1 quest at a time
+  onRejectQuest?: (questId: string) => void; // For GM view: reject a drawn quest
   onInvestInQuest: (questId: string, investment: any) => void;
   onResolveQuest: (questId: string, outcome: any, notes?: string) => void;
   availableResources: number;
   isGMView: boolean;
+  onSelectQuest?: (questId: string) => void;
+  selectedQuestId?: string;
 }
 
 export const QuestDrawer: React.FC<QuestDrawerProps> = ({
   availableQuests,
   drawnQuests = [],
   onDrawQuests,
+  onDrawSingleQuest,
+  onRejectQuest,
   onInvestInQuest,
   onResolveQuest,
   availableResources,
   isGMView,
+  onSelectQuest,
+  selectedQuestId,
 }) => {
   const [resolvingQuest, setResolvingQuest] = useState<string | null>(null);
 
@@ -50,14 +58,19 @@ export const QuestDrawer: React.FC<QuestDrawerProps> = ({
             {availableQuests.length} quests in pool
           </span>
         </div>
-        <button
-          className="draw-button"
-          onClick={handleDrawQuests}
-          disabled={availableQuests.length < 3}
-        >
-          <Shuffle className="icon" />
-          Draw 3 Quests
-        </button>
+        {isGMView && (
+          <button
+            className="draw-button"
+            onClick={onDrawSingleQuest || handleDrawQuests}
+            disabled={availableQuests.length < 1 || (drawnQuests?.length || 0) >= 3}
+          >
+            <Shuffle className="icon" />
+            Draw Quest
+            {(drawnQuests?.length || 0) >= 3 && (
+              <span className="max-indicator"> (Max 3)</span>
+            )}
+          </button>
+        )}
       </div>
 
       {drawnQuests.length > 0 && (
@@ -75,14 +88,26 @@ export const QuestDrawer: React.FC<QuestDrawerProps> = ({
                   }
                   availableResources={availableResources}
                   isResolving={resolvingQuest === quest.id}
+                  onSelect={onSelectQuest ? () => onSelectQuest(quest.id) : undefined}
+                  isSelected={selectedQuestId === quest.id}
                 />
                 {!resolvingQuest && (
-                  <button
-                    className="resolve-trigger-button"
-                    onClick={() => startResolving(quest.id)}
-                  >
-                    Resolve Quest
-                  </button>
+                  <div className="quest-actions">
+                    <button
+                      className="resolve-trigger-button"
+                      onClick={() => startResolving(quest.id)}
+                    >
+                      Resolve Quest
+                    </button>
+                    {isGMView && onRejectQuest && (
+                      <button
+                        className="reject-quest-button"
+                        onClick={() => onRejectQuest(quest.id)}
+                      >
+                        Reject
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
             ))}

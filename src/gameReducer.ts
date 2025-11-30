@@ -4,6 +4,8 @@ import {
   QuestOutcome,
   MetricDelta,
   QuestState,
+  TierRequirement,
+  Quest,
 } from "./types";
 import { questData } from "./questData";
 import { memoryManager } from "./memoryUtils";
@@ -17,7 +19,7 @@ function applyDeltas(
     H: Math.max(0, Math.min(100, metrics.H + (deltas.H || 0))),
     S: Math.max(0, Math.min(100, metrics.S + (deltas.S || 0))),
     U: Math.max(0, Math.min(100, metrics.U + (deltas.U || 0))),
-    O: Math.max(0, Math.min(10, metrics.O + (deltas.O || 0))), // Oppression capped at 10
+    O: Math.max(0, Math.min(100, metrics.O + (deltas.O || 0))), // Oppression 0-100 for tier system
     R: Math.max(0, metrics.R + (deltas.R || 0)),
   };
 }
@@ -74,18 +76,68 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
+// Tier system helpers
+function getTierBand(value: number): "Low" | "Med" | "High" {
+  if (value <= 33) return "Low";
+  if (value <= 66) return "Med";
+  return "High";
+}
+
+function matchesRequirement(
+  band: "Low" | "Med" | "High",
+  requirement: TierRequirement
+): boolean {
+  switch (requirement) {
+    case "Low":
+      return band === "Low";
+    case "Med":
+      return band === "Med";
+    case "High":
+      return band === "High";
+    case "Low–Med":
+      return band === "Low" || band === "Med";
+    case "Med–High":
+      return band === "Med" || band === "High";
+    default:
+      return false;
+  }
+}
+
+function isQuestAvailable(quest: Quest, state: CampaignState): boolean {
+  const oppressionBand = getTierBand(state.O);
+  const secrecyBand = getTierBand(state.S);
+  const hopeBand = getTierBand(state.H);
+  const unityBand = getTierBand(state.U);
+
+  // Check oppression requirement
+  if (!matchesRequirement(oppressionBand, quest.availabilityOppression)) {
+    return false;
+  }
+
+  // Check secondary track requirement
+  const secondaryBand =
+    quest.availabilitySecondary.track === "S"
+      ? secrecyBand
+      : quest.availabilitySecondary.track === "H"
+      ? hopeBand
+      : unityBand;
+
+  return matchesRequirement(secondaryBand, quest.availabilitySecondary.requirement);
+}
+
 // Initial state
 export const initialGameState: CampaignState = {
   turn: 1,
   H: 10, // Hope (reduced from 20)
   S: 10, // Secrecy (reduced from 20)
   U: 10, // Unity (reduced from 20)
-  O: 3, // Oppression (reduced from 10, max will be 10)
+  O: 25, // Oppression (0-100 scale, starts in Low tier: 0-33)
   R: 3, // Resources (reduced from 5)
   deck: questData.map((q) => q.gm),
   completed: [],
   discarded: [],
   lastDraw: [],
+  selectedQuest: undefined,
 };
 
 export function gameReducer(
@@ -94,25 +146,22 @@ export function gameReducer(
 ): CampaignState {
   switch (action.type) {
     case "START_TURN": {
-      // Oppression rises by +1 per turn
-      const newMetrics = applyDeltas(
-        { H: state.H, S: state.S, U: state.U, O: state.O, R: state.R },
-        { O: 1 }
-      );
-
+      // Just increment turn (Oppression now increases on quest resolution)
       return {
         ...state,
         turn: state.turn + 1,
-        ...newMetrics,
       };
     }
 
     case "DRAW_QUESTS": {
       // Draw 3 random quests from available deck
+      // First filter by tier availability, then by completion/discard status
       const availableQuests = state.deck.filter(
         (quest) =>
+          isQuestAvailable(quest, state) &&
           !state.completed.some((completed) => completed.id === quest.id) &&
-          !state.discarded?.includes(quest.id)
+          !state.discarded?.includes(quest.id) &&
+          !state.drawnQuests?.some((drawn) => drawn.id === quest.id)
       );
 
       const shuffled = shuffleArray(availableQuests);
@@ -122,6 +171,72 @@ export function gameReducer(
         ...state,
         lastDraw: drawn.map((q) => q.id),
         drawnQuests: drawn,
+      };
+    }
+
+    case "DRAW_SINGLE_QUEST": {
+      // Draw 1 random quest from available deck (GM view)
+      // Maximum of 3 quests can be drawn at a time
+      const currentDrawnCount = state.drawnQuests?.length || 0;
+      if (currentDrawnCount >= 3) {
+        return state; // Already at max (3 quests)
+      }
+
+      // First filter by tier availability, then by completion/discard status
+      const availableQuests = state.deck.filter(
+        (quest) =>
+          isQuestAvailable(quest, state) &&
+          !state.completed.some((completed) => completed.id === quest.id) &&
+          !state.discarded?.includes(quest.id) &&
+          !state.drawnQuests?.some((drawn) => drawn.id === quest.id)
+      );
+
+      if (availableQuests.length === 0) {
+        return state; // No quests available
+      }
+
+      const shuffled = shuffleArray(availableQuests);
+      const drawn = shuffled[0];
+
+      return {
+        ...state,
+        lastDraw: [drawn.id],
+        drawnQuests: [...(state.drawnQuests || []), drawn],
+      };
+    }
+
+    case "REJECT_QUEST": {
+      // Remove quest from drawnQuests and add to discarded
+      const questToReject = state.drawnQuests?.find(
+        (q) => q.id === action.questId
+      );
+
+      if (!questToReject) {
+        return state; // Quest not found
+      }
+
+      // Remove from drawnQuests
+      const updatedDrawnQuests = state.drawnQuests?.filter(
+        (q) => q.id !== action.questId
+      );
+
+      // Add to discarded
+      const updatedDiscarded = [
+        ...(state.discarded || []),
+        action.questId,
+      ];
+
+      // If this was the selected quest, deselect it
+      const updatedSelectedQuest =
+        state.selectedQuest === action.questId
+          ? undefined
+          : state.selectedQuest;
+
+      return {
+        ...state,
+        drawnQuests: updatedDrawnQuests,
+        discarded: updatedDiscarded,
+        selectedQuest: updatedSelectedQuest,
       };
     }
 
@@ -149,56 +264,42 @@ export function gameReducer(
       switch (action.outcome) {
         case "succeeded":
           baseEffects = quest.success;
-          questState = {
-            id: quest.id,
-            status: "succeeded",
-            turnResolved: state.turn,
-            appliedDeltas: quest.success,
-            notes: action.notes,
-          };
           break;
 
         case "partial":
           baseEffects = calculatePartialEffects(quest.success, quest.failure);
-          questState = {
-            id: quest.id,
-            status: "partial",
-            turnResolved: state.turn,
-            appliedDeltas: baseEffects,
-            notes: action.notes,
-          };
           break;
 
         case "failed":
           baseEffects = quest.failure;
-          questState = {
-            id: quest.id,
-            status: "failed",
-            turnResolved: state.turn,
-            appliedDeltas: quest.failure,
-            notes: action.notes,
-          };
           break;
 
         case "abandoned":
           baseEffects = calculateAbandonedEffects(quest.failure);
-          questState = {
-            id: quest.id,
-            status: "abandoned",
-            turnResolved: state.turn,
-            appliedDeltas: baseEffects,
-            notes: action.notes,
-          };
           break;
 
         default:
           return state;
       }
 
-      // Apply the effects
+      // Apply the effects, plus Oppression increases by +1 when a mission is resolved
+      const effectsWithOppression = {
+        ...baseEffects,
+        O: (baseEffects.O || 0) + 1, // Oppression always increases by +1 on quest resolution
+      };
+
+      // Create questState with the actual applied deltas (including Oppression increase)
+      questState = {
+        id: quest.id,
+        status: action.outcome,
+        turnResolved: state.turn,
+        appliedDeltas: effectsWithOppression,
+        notes: action.notes,
+      };
+
       const newMetrics = applyDeltas(
         { H: state.H, S: state.S, U: state.U, O: state.O, R: state.R },
-        baseEffects
+        effectsWithOppression
       );
 
       return {
@@ -206,6 +307,14 @@ export function gameReducer(
         ...newMetrics,
         completed: [...state.completed, questState],
         drawnQuests: state.drawnQuests?.filter((q) => q.id !== quest.id) || [],
+      };
+    }
+
+    case "SELECT_QUEST": {
+      // Only one quest can be selected at a time - selecting a new one replaces the previous
+      return {
+        ...state,
+        selectedQuest: action.questId || undefined,
       };
     }
 
@@ -246,6 +355,11 @@ export function gameReducer(
     case "AUTO_SAVE": {
       memoryManager.autoSave(state);
       return state; // No state change, just side effect
+    }
+
+    case "SET_STATE": {
+      // Directly set state (used for remote sync)
+      return action.state;
     }
 
     default:

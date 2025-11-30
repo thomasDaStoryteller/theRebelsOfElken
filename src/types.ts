@@ -13,6 +13,8 @@ export type Investment = {
   ruleText?: string; // e.g., "Ignore first failed Stealth"
 };
 
+export type TierRequirement = "Low" | "Med" | "High" | "Low–Med" | "Med–High";
+
 export type Quest = {
   id: string; // stable slug
   title: string;
@@ -32,6 +34,12 @@ export type Quest = {
   optionalInvestments: Investment[]; // suggested pre-mission spends
   complications: string[]; // GM color
   ties: string[]; // factions/individuals
+  // Availability requirements based on tier system
+  availabilityOppression: TierRequirement;
+  availabilitySecondary: {
+    track: "S" | "H" | "U"; // Secrecy, Hope, or Unity
+    requirement: TierRequirement;
+  };
 };
 
 export type QuestState = {
@@ -54,6 +62,7 @@ export type CampaignState = {
   discarded?: string[]; // if you allow permanent removal
   lastDraw?: string[]; // ids of last drawn 3
   drawnQuests?: Quest[]; // currently drawn quests for selection
+  selectedQuest?: string; // ID of currently selected mission (only one at a time)
 };
 
 export type QuestWithViews = {
@@ -76,11 +85,15 @@ export type GameAction =
       outcome: QuestOutcome;
       notes?: string;
     }
+  | { type: "SELECT_QUEST"; questId: string | null } // null to deselect
+  | { type: "DRAW_SINGLE_QUEST" } // Draw 1 quest at a time (GM view)
+  | { type: "REJECT_QUEST"; questId: string } // Reject/discard a drawn quest
   | { type: "RESET_GAME" }
   | { type: "SAVE_GAME"; saveName: string }
   | { type: "LOAD_GAME"; saveName: string }
   | { type: "DELETE_SAVE"; saveName: string }
-  | { type: "AUTO_SAVE" };
+  | { type: "AUTO_SAVE" }
+  | { type: "SET_STATE"; state: CampaignState }; // Set state directly (for remote sync)
 
 export type GameSave = {
   id: string;
