@@ -1,21 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CampaignState } from "../../types";
+import { Quest } from "../../types";
 import { GameHeader } from "../GameHeader";
-import { History, ScrollText, TrendingUp } from "lucide-react";
+import { QuestCard } from "../QuestCard";
+import { useGameState } from "../../GameStateContext";
+import { History, ScrollText, TrendingUp, X } from "lucide-react";
 import "./DashboardPage.css";
 
-interface DashboardPageProps {
-  state: CampaignState;
-  onStartTurn: () => void;
-  onResetGame: () => void;
-}
-
-export const DashboardPage: React.FC<DashboardPageProps> = ({
-  state,
-  onStartTurn,
-  onResetGame,
-}) => {
+export const DashboardPage: React.FC = () => {
+  const { state, startTurn, resetGame, selectQuest } = useGameState();
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "succeeded":
@@ -68,13 +61,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       !state.discarded?.includes(quest.id)
   ).length;
 
+  const selectedQuest: Quest | undefined = state.selectedQuest
+    ? state.deck.find((q) => q.id === state.selectedQuest)
+    : undefined;
+
   return (
     <div className="dashboard-page">
-      <GameHeader
-        state={state}
-        onStartTurn={onStartTurn}
-        onResetGame={onResetGame}
-      />
+      <GameHeader />
+
+      {selectedQuest && (
+        <div className="featured-mission-section">
+          <div className="featured-mission-header">
+            <h2>Featured Mission</h2>
+            <button
+              className="clear-selection-button"
+              onClick={() => selectQuest(null)}
+              aria-label="Clear selected mission"
+            >
+              <X className="icon" />
+              Clear Selection
+            </button>
+          </div>
+          <div className="featured-mission-card">
+            <QuestCard quest={selectedQuest} isGMView={false} />
+          </div>
+        </div>
+      )}
 
       <div className="dashboard-widgets">
         <div className="widget stats-widget">

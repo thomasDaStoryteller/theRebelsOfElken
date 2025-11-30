@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { FactionReference } from "../factionData";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import "./FactionCard.css";
 
 interface FactionCardProps {
   faction: FactionReference;
+  isGMView?: boolean;
 }
 
-export const FactionCard: React.FC<FactionCardProps> = ({ faction }) => {
+export const FactionCard: React.FC<FactionCardProps> = ({
+  faction,
+  isGMView = false,
+}) => {
+  const [expanded, setExpanded] = useState(false);
+
   const getRelationshipColor = (relationship: string) => {
     switch (relationship) {
       case "Allied":
@@ -23,6 +30,10 @@ export const FactionCard: React.FC<FactionCardProps> = ({ faction }) => {
         return "var(--status-neutral)";
     }
   };
+
+  const hasGMInfo =
+    isGMView &&
+    (faction.gmNotes || faction.internalStructure || faction.secrets);
 
   return (
     <div className="faction-card">
@@ -42,7 +53,74 @@ export const FactionCard: React.FC<FactionCardProps> = ({ faction }) => {
           {faction.relationship}
         </span>
       </div>
-      <p className="faction-description">{faction.description}</p>
+      <div className="faction-description">
+        {faction.description.map((section, index) => (
+          <div key={index} className="faction-description-section">
+            <h4 className="faction-section-title">{section.title}</h4>
+            <p className="faction-section-content">{section.content}</p>
+          </div>
+        ))}
+      </div>
+
+      {hasGMInfo && (
+        <>
+          <button
+            className="faction-expand-button"
+            onClick={() => setExpanded(!expanded)}
+            aria-expanded={expanded}
+          >
+            {expanded ? <ChevronUp /> : <ChevronDown />}
+            {expanded ? "Hide" : "Show"} GM Details
+          </button>
+
+          {expanded && (
+            <div className="faction-gm-details">
+              {faction.gmNotes && faction.gmNotes.length > 0 && (
+                <div className="faction-gm-section">
+                  <h4 className="faction-gm-section-title">GM Notes</h4>
+                  {faction.gmNotes.map((section, index) => (
+                    <div key={index} className="faction-gm-subsection">
+                      <h5 className="faction-gm-subsection-title">
+                        {section.title}
+                      </h5>
+                      <p className="faction-gm-text">{section.content}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {faction.internalStructure &&
+                faction.internalStructure.length > 0 && (
+                  <div className="faction-gm-section">
+                    <h4 className="faction-gm-section-title">Internal Structure</h4>
+                    {faction.internalStructure.map((section, index) => (
+                      <div key={index} className="faction-gm-subsection">
+                        <h5 className="faction-gm-subsection-title">
+                          {section.title}
+                        </h5>
+                        <p className="faction-gm-text">{section.content}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+              {faction.secrets && faction.secrets.length > 0 && (
+                <div className="faction-gm-section">
+                  <h4 className="faction-gm-section-title">Secrets</h4>
+                  {faction.secrets.map((section, index) => (
+                    <div key={index} className="faction-gm-subsection">
+                      <h5 className="faction-gm-subsection-title">
+                        {section.title}
+                      </h5>
+                      <p className="faction-gm-text">{section.content}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };

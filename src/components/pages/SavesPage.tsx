@@ -2,20 +2,12 @@ import React, { useState } from "react";
 import { MemoryManager } from "../MemoryManager";
 import { PasswordChange } from "../PasswordChange";
 import { usePassword } from "../../PasswordContext";
+import { useGameState } from "../../GameStateContext";
 import { Lock, Unlock } from "lucide-react";
 import "./SavesPage.css";
 
-interface SavesPageProps {
-  onSaveGame: (saveName: string) => void;
-  onLoadGame: (saveName: string) => void;
-  onDeleteSave: (saveName: string) => void;
-}
-
-export const SavesPage: React.FC<SavesPageProps> = ({
-  onSaveGame,
-  onLoadGame,
-  onDeleteSave,
-}) => {
+export const SavesPage: React.FC = () => {
+  const { saveGame, loadGame, deleteSave } = useGameState();
   const { isAuthenticated, logout } = usePassword();
   const [showPasswordChange, setShowPasswordChange] = useState(false);
 
@@ -27,9 +19,9 @@ export const SavesPage: React.FC<SavesPageProps> = ({
       </div>
       <div className="saves-content">
         <MemoryManager
-          onSaveGame={onSaveGame}
-          onLoadGame={onLoadGame}
-          onDeleteSave={onDeleteSave}
+          onSaveGame={saveGame}
+          onLoadGame={loadGame}
+          onDeleteSave={deleteSave}
         />
 
         <div className="password-management-section">

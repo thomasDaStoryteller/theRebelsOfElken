@@ -641,6 +641,42 @@ body {
   background: #e5e7eb;
 }
 
+.select-mission-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  width: 100%;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  background: var(--bg-tertiary);
+  border: 2px solid var(--border-secondary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.select-mission-button:hover {
+  background: var(--bg-secondary);
+  border-color: var(--border-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.select-mission-button.selected {
+  background: var(--color-forest);
+  color: var(--text-inverse);
+  border-color: var(--color-forest);
+}
+
+.select-mission-button.selected:hover {
+  background: var(--color-slate);
+  border-color: var(--color-slate);
+}
+
 /* GM Details */
 .quest-gm-details {
   background: #f9fafb;
@@ -964,6 +1000,48 @@ body {
 .resolve-trigger-button:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
+}
+
+.quest-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  justify-content: center;
+  position: relative;
+  bottom: auto;
+  right: auto;
+}
+
+.quest-actions .resolve-trigger-button {
+  position: relative;
+  bottom: auto;
+  right: auto;
+}
+
+.reject-quest-button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: linear-gradient(
+    135deg,
+    #dc3545 0%,
+    #c82333 100%
+  );
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.reject-quest-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.reject-quest-button:active {
+  transform: translateY(0);
 }
 
 /* Bottom Panels Layout */

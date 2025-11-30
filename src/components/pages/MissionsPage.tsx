@@ -1,26 +1,23 @@
 import React, { useState } from "react";
-import { QuestOutcome, Investment, CampaignState } from "../../types";
 import { QuestDrawer } from "../QuestDrawer";
 import { HistoryPanel } from "../HistoryPanel";
 import { PasswordPrompt } from "../PasswordPrompt";
 import { PasswordSetup } from "../PasswordSetup";
 import { usePassword } from "../../PasswordContext";
+import { useGameState } from "../../GameStateContext";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import "./MissionsPage.css";
 
-interface MissionsPageProps {
-  state: CampaignState;
-  onDrawQuests: () => void;
-  onInvestInQuest: (questId: string, investment: Investment) => void;
-  onResolveQuest: (questId: string, outcome: QuestOutcome, notes?: string) => void;
-}
-
-export const MissionsPage: React.FC<MissionsPageProps> = ({
-  state,
-  onDrawQuests,
-  onInvestInQuest,
-  onResolveQuest,
-}) => {
+export const MissionsPage: React.FC = () => {
+  const {
+    state,
+    drawQuests,
+    drawSingleQuest,
+    rejectQuest,
+    investInQuest,
+    resolveQuest,
+    selectQuest,
+  } = useGameState();
   const [isGMView, setIsGMView] = useState(false);
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [showPasswordSetup, setShowPasswordSetup] = useState(false);
@@ -109,11 +106,15 @@ export const MissionsPage: React.FC<MissionsPageProps> = ({
         <QuestDrawer
           availableQuests={availableQuests}
           drawnQuests={state.drawnQuests}
-          onDrawQuests={onDrawQuests}
-          onInvestInQuest={onInvestInQuest}
-          onResolveQuest={onResolveQuest}
+          onDrawQuests={drawQuests}
+          onDrawSingleQuest={drawSingleQuest}
+          onRejectQuest={rejectQuest}
+          onInvestInQuest={investInQuest}
+          onResolveQuest={resolveQuest}
           availableResources={state.R}
           isGMView={isGMView && isAuthenticated}
+          onSelectQuest={selectQuest}
+          selectedQuestId={state.selectedQuest}
         />
 
         <HistoryPanel completedQuests={state.completed} />

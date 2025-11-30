@@ -57,11 +57,109 @@
 }
 
 .faction-description {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+.faction-description-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.faction-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-forest);
+  margin: 0;
+  margin-bottom: var(--spacing-xs);
+}
+
+.faction-section-content {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+  font-size: 0.95rem;
+  text-align: justify;
+}
+
+.faction-expand-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  margin-top: var(--spacing-sm);
+  width: 100%;
+  justify-content: center;
+}
+
+.faction-expand-button:hover {
+  background: var(--bg-secondary);
+  border-color: var(--color-forest);
+}
+
+.faction-expand-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.faction-gm-details {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.faction-gm-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.faction-gm-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-forest);
+  margin: 0;
+  margin-bottom: var(--spacing-xs);
+  border-bottom: 2px solid var(--border-secondary);
+  padding-bottom: var(--spacing-xs);
+}
+
+.faction-gm-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.faction-gm-subsection-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-slate);
+  margin: 0;
+  margin-top: var(--spacing-sm);
+}
+
+.faction-gm-text {
   color: var(--text-secondary);
   line-height: 1.6;
   margin: 0;
-  font-size: 0.95rem;
-  flex: 1;
+  font-size: 0.9rem;
+  text-align: justify;
 }
 
 @media (max-width: 768px) {

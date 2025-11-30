@@ -1,19 +1,10 @@
 import React from "react";
-import { CampaignState } from "../types";
 import { MetricBar } from "./MetricBar";
+import { useGameState } from "../GameStateContext";
 import { Play, RotateCcw } from "lucide-react";
 
-interface GameHeaderProps {
-  state: CampaignState;
-  onStartTurn: () => void;
-  onResetGame: () => void;
-}
-
-export const GameHeader: React.FC<GameHeaderProps> = ({
-  state,
-  onStartTurn,
-  onResetGame,
-}) => {
+export const GameHeader: React.FC = () => {
+  const { state, startTurn, resetGame } = useGameState();
   return (
     <div className="game-header">
       <div className="header-top">
@@ -22,11 +13,11 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
           <div className="turn-counter">Turn {state.turn}</div>
         </div>
         <div className="header-actions">
-          <button className="action-button primary" onClick={onStartTurn}>
+          <button className="action-button primary" onClick={startTurn}>
             <Play className="icon" />
             Start Turn
           </button>
-          <button className="action-button secondary" onClick={onResetGame}>
+          <button className="action-button secondary" onClick={resetGame}>
             <RotateCcw className="icon" />
             Reset Game
           </button>
@@ -58,7 +49,7 @@ export const GameHeader: React.FC<GameHeaderProps> = ({
         <MetricBar
           label="Oppression"
           value={state.O}
-          max={10}
+          max={100}
           color="var(--color-rust)"
           icon="⚔️"
         />
