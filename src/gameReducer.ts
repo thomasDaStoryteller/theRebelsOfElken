@@ -146,16 +146,10 @@ export function gameReducer(
 ): CampaignState {
   switch (action.type) {
     case "START_TURN": {
-      // Oppression rises by +1 per turn
-      const newMetrics = applyDeltas(
-        { H: state.H, S: state.S, U: state.U, O: state.O, R: state.R },
-        { O: 1 }
-      );
-
+      // Just increment turn (Oppression now increases on quest resolution)
       return {
         ...state,
         turn: state.turn + 1,
-        ...newMetrics,
       };
     }
 
@@ -270,56 +264,42 @@ export function gameReducer(
       switch (action.outcome) {
         case "succeeded":
           baseEffects = quest.success;
-          questState = {
-            id: quest.id,
-            status: "succeeded",
-            turnResolved: state.turn,
-            appliedDeltas: quest.success,
-            notes: action.notes,
-          };
           break;
 
         case "partial":
           baseEffects = calculatePartialEffects(quest.success, quest.failure);
-          questState = {
-            id: quest.id,
-            status: "partial",
-            turnResolved: state.turn,
-            appliedDeltas: baseEffects,
-            notes: action.notes,
-          };
           break;
 
         case "failed":
           baseEffects = quest.failure;
-          questState = {
-            id: quest.id,
-            status: "failed",
-            turnResolved: state.turn,
-            appliedDeltas: quest.failure,
-            notes: action.notes,
-          };
           break;
 
         case "abandoned":
           baseEffects = calculateAbandonedEffects(quest.failure);
-          questState = {
-            id: quest.id,
-            status: "abandoned",
-            turnResolved: state.turn,
-            appliedDeltas: baseEffects,
-            notes: action.notes,
-          };
           break;
 
         default:
           return state;
       }
 
-      // Apply the effects
+      // Apply the effects, plus Oppression increases by +1 when a mission is resolved
+      const effectsWithOppression = {
+        ...baseEffects,
+        O: (baseEffects.O || 0) + 1, // Oppression always increases by +1 on quest resolution
+      };
+
+      // Create questState with the actual applied deltas (including Oppression increase)
+      questState = {
+        id: quest.id,
+        status: action.outcome,
+        turnResolved: state.turn,
+        appliedDeltas: effectsWithOppression,
+        notes: action.notes,
+      };
+
       const newMetrics = applyDeltas(
         { H: state.H, S: state.S, U: state.U, O: state.O, R: state.R },
-        baseEffects
+        effectsWithOppression
       );
 
       return {

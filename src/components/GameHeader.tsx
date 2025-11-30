@@ -1,26 +1,15 @@
 import React from "react";
 import { MetricBar } from "./MetricBar";
 import { useGameState } from "../GameStateContext";
-import { Play, RotateCcw } from "lucide-react";
 
 export const GameHeader: React.FC = () => {
-  const { state, startTurn, resetGame } = useGameState();
+  const { state } = useGameState();
   return (
     <div className="game-header">
       <div className="header-top">
         <div className="game-title">
           <h1>Campaign Cards</h1>
           <div className="turn-counter">Turn {state.turn}</div>
-        </div>
-        <div className="header-actions">
-          <button className="action-button primary" onClick={startTurn}>
-            <Play className="icon" />
-            Start Turn
-          </button>
-          <button className="action-button secondary" onClick={resetGame}>
-            <RotateCcw className="icon" />
-            Reset Game
-          </button>
         </div>
       </div>
 
