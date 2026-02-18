@@ -131,10 +131,7 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   padding: var(--spacing-xl);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
+  min-height: calc(100vh - 80px);
   width: 100%;
   overflow-x: hidden;
 }
@@ -420,51 +417,7 @@ body {
   border: 2px solid var(--color-bronze);
 }
 
-/* View Toggle */
-.view-toggle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-
-.view-button {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  background: var(--bg-secondary);
-  border: 2px solid var(--border-secondary);
-  border-radius: var(--radius-full);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  min-height: 44px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.view-button.active {
-  background: linear-gradient(
-    135deg,
-    var(--color-bronze) 0%,
-    var(--color-rust) 100%
-  );
-  color: var(--text-inverse);
-  border-color: var(--color-bronze);
-  box-shadow: var(--shadow-md);
-}
-
-.view-button:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-.view-button:focus-visible {
-  outline: 2px solid var(--border-focus);
-  outline-offset: 2px;
-}
+/* View toggle styles moved to MissionsPage.css */
 
 /* Theme Toggle */
 .theme-toggle {
@@ -686,6 +639,42 @@ body {
 
 .expand-button:hover {
   background: #e5e7eb;
+}
+
+.select-mission-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  width: 100%;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  background: var(--bg-tertiary);
+  border: 2px solid var(--border-secondary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.select-mission-button:hover {
+  background: var(--bg-secondary);
+  border-color: var(--border-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.select-mission-button.selected {
+  background: var(--color-forest);
+  color: var(--text-inverse);
+  border-color: var(--color-forest);
+}
+
+.select-mission-button.selected:hover {
+  background: var(--color-slate);
+  border-color: var(--color-slate);
 }
 
 /* GM Details */
@@ -1013,19 +1002,50 @@ body {
   box-shadow: var(--shadow-md);
 }
 
-/* Bottom Panels Layout */
-.bottom-panels {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-xl);
+.quest-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  justify-content: center;
+  position: relative;
+  bottom: auto;
+  right: auto;
 }
 
-@media (max-width: 768px) {
-  .bottom-panels {
-    grid-template-columns: 1fr;
-  }
+.quest-actions .resolve-trigger-button {
+  position: relative;
+  bottom: auto;
+  right: auto;
 }
+
+.reject-quest-button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: linear-gradient(
+    135deg,
+    #dc3545 0%,
+    #c82333 100%
+  );
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.reject-quest-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.reject-quest-button:active {
+  transform: translateY(0);
+}
+
+/* Bottom Panels Layout */
+/* Bottom panels styles moved to page components */
 
 /* Memory Manager */
 .memory-manager {

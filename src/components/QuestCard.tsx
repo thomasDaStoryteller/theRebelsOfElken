@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Quest, Investment, QuestOutcome } from "../types";
-import { ChevronDown, ChevronUp, Coins } from "lucide-react";
+import { usePassword } from "../PasswordContext";
+import { ChevronDown, ChevronUp, Coins, Users, Eye, Heart } from "lucide-react";
 
 interface QuestCardProps {
   quest: Quest;
@@ -9,6 +10,8 @@ interface QuestCardProps {
   onResolve?: (outcome: QuestOutcome, notes?: string) => void;
   availableResources?: number;
   isResolving?: boolean;
+  onSelect?: () => void;
+  isSelected?: boolean;
 }
 
 export const QuestCard: React.FC<QuestCardProps> = ({
@@ -18,18 +21,24 @@ export const QuestCard: React.FC<QuestCardProps> = ({
   onResolve,
   availableResources = 0,
   isResolving = false,
+  onSelect,
+  isSelected = false,
 }) => {
+  const { isAuthenticated } = usePassword();
   const [expanded, setExpanded] = useState(false);
+
+  // Only show GM details if authenticated
+  const canShowGMDetails = isGMView && isAuthenticated;
   const [investmentsExpanded, setInvestmentsExpanded] = useState(false);
   const [selectedInvestments, setSelectedInvestments] = useState<Investment[]>(
-    []
+    [],
   );
   const [notes, setNotes] = useState("");
 
   const handleInvestmentToggle = (investment: Investment) => {
     if (selectedInvestments.some((inv) => inv.label === investment.label)) {
       setSelectedInvestments((prev) =>
-        prev.filter((inv) => inv.label !== investment.label)
+        prev.filter((inv) => inv.label !== investment.label),
       );
     } else {
       setSelectedInvestments((prev) => [...prev, investment]);
@@ -45,7 +54,7 @@ export const QuestCard: React.FC<QuestCardProps> = ({
 
   const totalInvestmentCost = selectedInvestments.reduce(
     (sum, inv) => sum + inv.costR,
-    0
+    0,
   );
   const canAfford = availableResources >= quest.costR + totalInvestmentCost;
 
@@ -114,7 +123,17 @@ export const QuestCard: React.FC<QuestCardProps> = ({
 
       <div className="quest-hook">{quest.hook}</div>
 
-      {isGMView && (
+      {onSelect && !isResolving && (
+        <button
+          className={`select-mission-button ${isSelected ? "selected" : ""}`}
+          onClick={onSelect}
+          aria-pressed={isSelected}
+        >
+          {isSelected ? "✓ Selected" : "Select Mission"}
+        </button>
+      )}
+
+      {canShowGMDetails && (
         <button
           className="expand-button"
           onClick={() => setExpanded(!expanded)}
@@ -124,8 +143,25 @@ export const QuestCard: React.FC<QuestCardProps> = ({
         </button>
       )}
 
-      {expanded && isGMView && (
+      {expanded && canShowGMDetails && (
         <div className="quest-gm-details">
+          <div className="quest-availability">
+            <h4>Availability Requirements:</h4>
+            <div className="availability-requirements">
+              <span className="availability-tag">
+                Oppression: {quest.availabilityOppression}
+              </span>
+              <span className="availability-tag">
+                {quest.availabilitySecondary.track === "S"
+                  ? "Secrecy"
+                  : quest.availabilitySecondary.track === "H"
+                    ? "Hope"
+                    : "Unity"}
+                : {quest.availabilitySecondary.requirement}
+              </span>
+            </div>
+          </div>
+
           <div className="quest-effects">
             <div className="effect-section">
               <h4>Success Effects:</h4>
@@ -203,7 +239,7 @@ export const QuestCard: React.FC<QuestCardProps> = ({
                   <input
                     type="checkbox"
                     checked={selectedInvestments.some(
-                      (inv) => inv.label === investment.label
+                      (inv) => inv.label === investment.label,
                     )}
                     onChange={() => handleInvestmentToggle(investment)}
                     disabled={!canAfford}
@@ -231,7 +267,7 @@ export const QuestCard: React.FC<QuestCardProps> = ({
                             <span key={key} className="delta positive">
                               {key}: +{value}
                             </span>
-                          )
+                          ),
                         )}
                       </div>
                     )}

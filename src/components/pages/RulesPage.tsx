@@ -1,25 +1,9 @@
 import React from "react";
-import { ArrowLeft } from "lucide-react";
-import "./RulesPage.css";
+import "../RulesPage.css";
 
-interface RulesPageProps {
-  onBack: () => void;
-}
-
-export const RulesPage: React.FC<RulesPageProps> = ({ onBack }) => {
+export const RulesPage: React.FC = () => {
   return (
     <div className="rules-page">
-      <div className="rules-header">
-        <button
-          className="back-button"
-          onClick={onBack}
-          aria-label="Back to game"
-        >
-          <ArrowLeft className="icon" aria-hidden="true" />
-          Back to Game
-        </button>
-      </div>
-
       <div className="rules-content">
         <h1>⚙️ Resistance Campaign Mechanics</h1>
         <section className="rules-section">
@@ -235,3 +219,7 @@ export const RulesPage: React.FC<RulesPageProps> = ({ onBack }) => {
     </div>
   );
 };
+
+
+
+
