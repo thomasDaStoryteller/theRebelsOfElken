@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Quest, Investment, QuestOutcome } from "../types";
-import { ChevronDown, ChevronUp, Coins, Users, Eye, Heart } from "lucide-react";
+import { ChevronDown, ChevronUp, Coins } from "lucide-react";
 
 interface QuestCardProps {
   quest: Quest;

@@ -1,7 +1,6 @@
 import {
   CampaignState,
   GameAction,
-  QuestOutcome,
   MetricDelta,
   QuestState,
 } from "./types";
@@ -247,6 +246,9 @@ export function gameReducer(
       memoryManager.autoSave(state);
       return state; // No state change, just side effect
     }
+
+    case "LOAD_STATE":
+      return { ...action.state };
 
     default:
       return state;

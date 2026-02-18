@@ -80,7 +80,8 @@ export type GameAction =
   | { type: "SAVE_GAME"; saveName: string }
   | { type: "LOAD_GAME"; saveName: string }
   | { type: "DELETE_SAVE"; saveName: string }
-  | { type: "AUTO_SAVE" };
+  | { type: "AUTO_SAVE" }
+  | { type: "LOAD_STATE"; state: CampaignState };
 
 export type GameSave = {
   id: string;

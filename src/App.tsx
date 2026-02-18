@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useReducer, useState, useEffect, useRef } from "react";
 import { QuestOutcome, Investment } from "./types";
 import { gameReducer, initialGameState } from "./gameReducer";
 import { GameHeader } from "./components/GameHeader";
@@ -15,6 +15,10 @@ function App() {
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [isGMView, setIsGMView] = useState(false);
   const [showRules, setShowRules] = useState(false);
+
+  // Refs to control Redis sync behaviour
+  const hasSynced = useRef(false);
+  const skipNextPush = useRef(false);
 
   const handleStartTurn = () => {
     dispatch({ type: "START_TURN" });
@@ -73,6 +77,44 @@ function App() {
       dispatch({ type: "AUTO_SAVE" });
     }
   }, [state.turn, state.completed.length]);
+
+  // Load shared state from Redis on mount
+  useEffect(() => {
+    fetch("/api/game-state")
+      .then((res) => res.json())
+      .then(({ state: remoteState }) => {
+        if (remoteState) {
+          skipNextPush.current = true;
+          dispatch({
+            type: "LOAD_STATE",
+            state: { ...remoteState, deck: initialGameState.deck },
+          });
+        }
+      })
+      .catch(console.error)
+      .finally(() => {
+        hasSynced.current = true;
+      });
+  }, []);
+
+  // Push state to Redis whenever it changes
+  useEffect(() => {
+    if (!hasSynced.current) return;
+    if (skipNextPush.current) {
+      skipNextPush.current = false;
+      return;
+    }
+    // Exclude the static deck from storage to keep the payload small
+    const { deck: _deck, ...stateToSync } = state;
+    const timeoutId = setTimeout(() => {
+      fetch("/api/game-state", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(stateToSync),
+      }).catch(console.error);
+    }, 200);
+    return () => clearTimeout(timeoutId);
+  }, [state]);
 
   // Get available quests (not completed or discarded)
   const availableQuests = state.deck.filter(
