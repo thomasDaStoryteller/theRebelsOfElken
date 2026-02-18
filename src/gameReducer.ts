@@ -356,18 +356,8 @@ export function gameReducer(
       return state; // No state change, just side effect
     }
 
-    case "SET_STATE": {
-      // Directly set state (used for remote sync)
+    case "SET_STATE":
       return action.state;
-    }
-
-    case "SET_STATE": {
-      // Directly set state (used for remote sync)
-      return action.state;
-    }
-
-    case "LOAD_STATE":
-      return { ...action.state };
 
     default:
       return state;
