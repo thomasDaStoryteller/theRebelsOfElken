@@ -8,7 +8,7 @@ import { History, ScrollText, TrendingUp, X } from "lucide-react";
 import "./DashboardPage.css";
 
 export const DashboardPage: React.FC = () => {
-  const { state, startTurn, resetGame, selectQuest } = useGameState();
+  const { state, selectQuest } = useGameState();
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "succeeded":

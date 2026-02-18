@@ -4,7 +4,6 @@ import {
   setPassword,
   validatePassword,
   clearPassword,
-  getDefaultPassword,
 } from "../config/gmPassword";
 import { usePassword } from "../PasswordContext";
 import "./PasswordChange.css";
@@ -24,13 +23,11 @@ export const PasswordChange: React.FC<PasswordChangeProps> = ({
   const [useDefault, setUseDefault] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [defaultPassword, setDefaultPassword] = useState("gm");
   const { hasPasswordSet, refreshAuth } = usePassword();
   const currentPasswordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      getDefaultPassword().then((pwd) => setDefaultPassword(pwd));
       if (currentPasswordRef.current) {
         currentPasswordRef.current.focus();
       }

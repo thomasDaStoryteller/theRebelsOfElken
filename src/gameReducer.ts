@@ -1,7 +1,6 @@
 import {
   CampaignState,
   GameAction,
-  QuestOutcome,
   MetricDelta,
   QuestState,
   TierRequirement,
@@ -13,7 +12,7 @@ import { memoryManager } from "./memoryUtils";
 // Helper function to apply metric deltas
 function applyDeltas(
   metrics: { H: number; S: number; U: number; O: number; R: number },
-  deltas: MetricDelta
+  deltas: MetricDelta,
 ) {
   return {
     H: Math.max(0, Math.min(100, metrics.H + (deltas.H || 0))),
@@ -27,7 +26,7 @@ function applyDeltas(
 // Helper function to calculate partial effects (half of success, half of failure)
 function calculatePartialEffects(
   success: MetricDelta,
-  failure: MetricDelta
+  failure: MetricDelta,
 ): MetricDelta {
   const result: MetricDelta = {};
 
@@ -85,7 +84,7 @@ function getTierBand(value: number): "Low" | "Med" | "High" {
 
 function matchesRequirement(
   band: "Low" | "Med" | "High",
-  requirement: TierRequirement
+  requirement: TierRequirement,
 ): boolean {
   switch (requirement) {
     case "Low":
@@ -119,10 +118,13 @@ function isQuestAvailable(quest: Quest, state: CampaignState): boolean {
     quest.availabilitySecondary.track === "S"
       ? secrecyBand
       : quest.availabilitySecondary.track === "H"
-      ? hopeBand
-      : unityBand;
+        ? hopeBand
+        : unityBand;
 
-  return matchesRequirement(secondaryBand, quest.availabilitySecondary.requirement);
+  return matchesRequirement(
+    secondaryBand,
+    quest.availabilitySecondary.requirement,
+  );
 }
 
 // Initial state
@@ -142,7 +144,7 @@ export const initialGameState: CampaignState = {
 
 export function gameReducer(
   state: CampaignState,
-  action: GameAction
+  action: GameAction,
 ): CampaignState {
   switch (action.type) {
     case "START_TURN": {
@@ -161,7 +163,7 @@ export function gameReducer(
           isQuestAvailable(quest, state) &&
           !state.completed.some((completed) => completed.id === quest.id) &&
           !state.discarded?.includes(quest.id) &&
-          !state.drawnQuests?.some((drawn) => drawn.id === quest.id)
+          !state.drawnQuests?.some((drawn) => drawn.id === quest.id),
       );
 
       const shuffled = shuffleArray(availableQuests);
@@ -188,7 +190,7 @@ export function gameReducer(
           isQuestAvailable(quest, state) &&
           !state.completed.some((completed) => completed.id === quest.id) &&
           !state.discarded?.includes(quest.id) &&
-          !state.drawnQuests?.some((drawn) => drawn.id === quest.id)
+          !state.drawnQuests?.some((drawn) => drawn.id === quest.id),
       );
 
       if (availableQuests.length === 0) {
@@ -208,7 +210,7 @@ export function gameReducer(
     case "REJECT_QUEST": {
       // Remove quest from drawnQuests and add to discarded
       const questToReject = state.drawnQuests?.find(
-        (q) => q.id === action.questId
+        (q) => q.id === action.questId,
       );
 
       if (!questToReject) {
@@ -217,14 +219,11 @@ export function gameReducer(
 
       // Remove from drawnQuests
       const updatedDrawnQuests = state.drawnQuests?.filter(
-        (q) => q.id !== action.questId
+        (q) => q.id !== action.questId,
       );
 
       // Add to discarded
-      const updatedDiscarded = [
-        ...(state.discarded || []),
-        action.questId,
-      ];
+      const updatedDiscarded = [...(state.discarded || []), action.questId];
 
       // If this was the selected quest, deselect it
       const updatedSelectedQuest =
@@ -299,7 +298,7 @@ export function gameReducer(
 
       const newMetrics = applyDeltas(
         { H: state.H, S: state.S, U: state.U, O: state.O, R: state.R },
-        effectsWithOppression
+        effectsWithOppression,
       );
 
       return {
@@ -357,10 +356,8 @@ export function gameReducer(
       return state; // No state change, just side effect
     }
 
-    case "SET_STATE": {
-      // Directly set state (used for remote sync)
+    case "SET_STATE":
       return action.state;
-    }
 
     default:
       return state;

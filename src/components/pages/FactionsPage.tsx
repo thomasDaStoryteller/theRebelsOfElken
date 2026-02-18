@@ -99,7 +99,7 @@ export const FactionsPage: React.FC = () => {
         {factionData
           .filter(
             (faction) =>
-              isGMView && isAuthenticated || faction.id !== "intellect-devourer-cabal"
+              (isGMView && isAuthenticated) || faction.id !== "intellect-devourer-cabal"
           )
           .map((faction) => (
             <FactionCard

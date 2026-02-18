@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Quest, Investment, QuestOutcome } from "../types";
 import { usePassword } from "../PasswordContext";
-import { ChevronDown, ChevronUp, Coins, Users, Eye, Heart } from "lucide-react";
+import { ChevronDown, ChevronUp, Coins } from "lucide-react";
 
 interface QuestCardProps {
   quest: Quest;
@@ -31,14 +31,14 @@ export const QuestCard: React.FC<QuestCardProps> = ({
   const canShowGMDetails = isGMView && isAuthenticated;
   const [investmentsExpanded, setInvestmentsExpanded] = useState(false);
   const [selectedInvestments, setSelectedInvestments] = useState<Investment[]>(
-    []
+    [],
   );
   const [notes, setNotes] = useState("");
 
   const handleInvestmentToggle = (investment: Investment) => {
     if (selectedInvestments.some((inv) => inv.label === investment.label)) {
       setSelectedInvestments((prev) =>
-        prev.filter((inv) => inv.label !== investment.label)
+        prev.filter((inv) => inv.label !== investment.label),
       );
     } else {
       setSelectedInvestments((prev) => [...prev, investment]);
@@ -54,7 +54,7 @@ export const QuestCard: React.FC<QuestCardProps> = ({
 
   const totalInvestmentCost = selectedInvestments.reduce(
     (sum, inv) => sum + inv.costR,
-    0
+    0,
   );
   const canAfford = availableResources >= quest.costR + totalInvestmentCost;
 
@@ -155,8 +155,8 @@ export const QuestCard: React.FC<QuestCardProps> = ({
                 {quest.availabilitySecondary.track === "S"
                   ? "Secrecy"
                   : quest.availabilitySecondary.track === "H"
-                  ? "Hope"
-                  : "Unity"}
+                    ? "Hope"
+                    : "Unity"}
                 : {quest.availabilitySecondary.requirement}
               </span>
             </div>
@@ -239,7 +239,7 @@ export const QuestCard: React.FC<QuestCardProps> = ({
                   <input
                     type="checkbox"
                     checked={selectedInvestments.some(
-                      (inv) => inv.label === investment.label
+                      (inv) => inv.label === investment.label,
                     )}
                     onChange={() => handleInvestmentToggle(investment)}
                     disabled={!canAfford}
@@ -267,7 +267,7 @@ export const QuestCard: React.FC<QuestCardProps> = ({
                             <span key={key} className="delta positive">
                               {key}: +{value}
                             </span>
-                          )
+                          ),
                         )}
                       </div>
                     )}

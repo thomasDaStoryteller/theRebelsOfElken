@@ -13,7 +13,6 @@ import { GameStateProvider } from "./GameStateContext";
 import "./App.css";
 
 function App() {
-
   return (
     <ThemeProvider>
       <PasswordProvider>

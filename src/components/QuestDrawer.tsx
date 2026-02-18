@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Quest } from "../types";
 import { QuestCard } from "./QuestCard";
-import { Shuffle, Eye, EyeOff } from "lucide-react";
+import { Shuffle } from "lucide-react";
 
 interface QuestDrawerProps {
   availableQuests: Quest[];
