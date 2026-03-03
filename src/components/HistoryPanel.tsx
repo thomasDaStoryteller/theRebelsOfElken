@@ -29,15 +29,15 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case "succeeded":
-        return "#10b981";
+        return "#065f46"; // dark green — ~8:1 on white
       case "partial":
-        return "#f59e0b";
+        return "#92400e"; // dark amber — ~7:1 on white
       case "failed":
-        return "#ef4444";
+        return "#991b1b"; // dark red — ~6:1 on white
       case "abandoned":
-        return "#6b7280";
+        return "#374151"; // dark grey — ~10:1 on white
       default:
-        return "#6b7280";
+        return "#374151";
     }
   };
 

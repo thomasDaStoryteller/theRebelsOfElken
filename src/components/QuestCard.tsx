@@ -77,6 +77,19 @@ export const QuestCard: React.FC<QuestCardProps> = ({
     }
   };
 
+  // Cream and bronze backgrounds are light — use dark text for contrast.
+  // Forest, rust, and slate are dark enough for white text.
+  const getCategoryTextColor = (category: string) => {
+    switch (category) {
+      case "Unity":       // cream
+      case "Propaganda":  // bronze
+      case "Special":     // bronze
+        return "#2d1b1b";
+      default:
+        return "#ffffff";
+    }
+  };
+
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case "Smuggling":
@@ -109,7 +122,10 @@ export const QuestCard: React.FC<QuestCardProps> = ({
         <div className="quest-title-section">
           <div
             className="quest-category"
-            style={{ backgroundColor: getCategoryColor(quest.category) }}
+            style={{
+              backgroundColor: getCategoryColor(quest.category),
+              color: getCategoryTextColor(quest.category),
+            }}
           >
             {getCategoryIcon(quest.category)} {quest.category}
           </div>

@@ -138,7 +138,7 @@ body {
 
 /* Game Header */
 .game-header {
-  background: #c08b51;
+  background: var(--color-bronze);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius-xl);
@@ -353,11 +353,11 @@ body {
 
 .metric-track {
   height: 12px;
-  background: var(--bg-tertiary);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: var(--radius-full);
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .metric-fill {
@@ -457,7 +457,7 @@ body {
 
 /* Quest Drawer */
 .quest-drawer {
-  background: #c08b51;
+  background: var(--color-bronze);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 24px;
@@ -469,7 +469,7 @@ body {
 }
 
 .drawn-quests-header {
-  color: #34544f;
+  color: var(--text-primary);
   padding-left: 10px;
   padding-bottom: 10px;
   font-size: 1.4rem;
@@ -492,14 +492,14 @@ body {
 
 .quest-count {
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-weight: 500;
 }
 
 .drawer-header h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .draw-button {
@@ -600,7 +600,7 @@ body {
 .quest-title {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #a7623c;
+  color: var(--color-rust);
   margin: 0;
 }
 
@@ -627,18 +627,19 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
+  background: var(--bg-card);
+  border: 1px solid var(--border-secondary);
   border-radius: 6px;
   padding: 8px 12px;
   font-size: 0.9rem;
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
   margin-bottom: 16px;
 }
 
 .expand-button:hover {
-  background: #e5e7eb;
+  background: var(--bg-tertiary);
 }
 
 .select-mission-button {
@@ -679,11 +680,11 @@ body {
 
 /* GM Details */
 .quest-gm-details {
-  background: #f9fafb;
+  background: var(--bg-card);
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-secondary);
 }
 
 .quest-effects {
@@ -697,7 +698,7 @@ body {
 .effect-section h4 {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
@@ -728,7 +729,7 @@ body {
 .quest-ties h4 {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
@@ -739,7 +740,7 @@ body {
 
 .quest-complications li {
   padding: 4px 0;
-  color: #4b5563;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -755,17 +756,18 @@ body {
 }
 
 .tie-tag {
-  background: #e0e7ff;
-  color: #3730a3;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
+  border: 1px solid var(--border-secondary);
 }
 
 /* Investments */
 .quest-investments {
-  background: #dbca9a;
+  background: var(--color-cream);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
@@ -855,7 +857,7 @@ body {
 
 .investment-label {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .investment-cost {
@@ -911,16 +913,16 @@ body {
 
 /* Quest Resolution */
 .quest-resolution {
-  background: #fef2f2;
+  background: var(--bg-card);
   border-radius: 8px;
   padding: 16px;
-  border: 1px solid #fecaca;
+  border: 1px solid var(--border-secondary);
 }
 
 .quest-resolution h4 {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #991b1b;
+  color: var(--text-primary);
   margin-bottom: 12px;
 }
 
@@ -970,10 +972,12 @@ body {
   width: 100%;
   min-height: 60px;
   padding: 8px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-secondary);
   border-radius: 6px;
   font-family: inherit;
   font-size: 0.9rem;
+  color: var(--text-primary);
+  background: var(--bg-card);
   resize: vertical;
 }
 
@@ -1317,7 +1321,7 @@ body {
 
 /* History Panel */
 .history-panel {
-  background: #c08b51;
+  background: var(--color-bronze);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -1330,13 +1334,13 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: #dbca9a;
+  background: var(--color-cream);
   cursor: pointer;
   transition: background 0.2s ease;
 }
 
 .history-header:hover {
-  background: #786f5d;
+  background: var(--bg-secondary);
 }
 
 .history-title {
@@ -1344,7 +1348,7 @@ body {
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .history-content {
@@ -1354,7 +1358,7 @@ body {
 }
 
 .no-history {
-  color: #6b7280;
+  color: var(--text-primary);
   text-align: center;
   font-style: italic;
 }
@@ -1366,10 +1370,10 @@ body {
 }
 
 .history-item {
-  background: #f9fafb;
+  background: var(--bg-card);
   border-radius: 8px;
   padding: 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-secondary);
 }
 
 .history-item-header {
@@ -1387,13 +1391,13 @@ body {
 
 .quest-id {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 0.9rem;
 }
 
 .quest-turn {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .quest-status {
@@ -1410,24 +1414,24 @@ body {
 
 .deltas-label {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
 .quest-notes {
   font-size: 0.9rem;
-  color: #4b5563;
-  background: #ffffff;
+  color: var(--text-secondary);
+  background: var(--bg-card);
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-secondary);
 }
 
 /* No Quests */
 .no-quests {
   text-align: center;
   padding: 40px 20px;
-  color: #6b7280;
+  color: var(--text-primary);
 }
 
 /* Responsive Design */
