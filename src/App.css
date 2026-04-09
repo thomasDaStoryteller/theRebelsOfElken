@@ -28,12 +28,12 @@
   --border-focus: var(--color-rust);
 
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1);
 
   --radius-sm: 6px;
@@ -85,9 +85,9 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-primary);
@@ -453,6 +453,10 @@ body {
   gap: var(--spacing-lg);
   width: 100%;
   overflow-x: hidden;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--border-secondary);
 }
 
 /* Quest Drawer */
@@ -1024,11 +1028,7 @@ body {
 
 .reject-quest-button {
   padding: var(--spacing-sm) var(--spacing-md);
-  background: linear-gradient(
-    135deg,
-    #dc3545 0%,
-    #c82333 100%
-  );
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
   color: var(--text-inverse);
   border: none;
   border-radius: var(--radius-md);
@@ -1563,8 +1563,8 @@ body {
     --border-secondary: #000000;
     --text-muted: #000000;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5),
-      0 2px 4px -1px rgba(0, 0, 0, 0.5);
+    --shadow-md:
+      0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.5);
   }
 }
 

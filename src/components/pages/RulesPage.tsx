@@ -1,5 +1,5 @@
 import React from "react";
-import "../RulesPage.css";
+import "./RulesPage.css";
 
 export const RulesPage: React.FC = () => {
   return (
@@ -219,7 +219,3 @@ export const RulesPage: React.FC = () => {
     </div>
   );
 };
-
-
-
-

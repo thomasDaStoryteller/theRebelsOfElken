@@ -27,44 +27,66 @@ export const districtData: DistrictData[] = [
     id: "lanternward",
     name: "Lanternward",
     icon: "🏮",
-    tagline: "The old quarter of light and learning.",
+    tagline: "The heart of Elken — stubborn, proud, and still beating.",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "Lanternward is low-slung and welcoming, its buildings never reaching too high, as if the district prefers to stay at eye level with its people. Before the lockdown, it was a riot of noise and dialects — travelers, traders, immigrants, all layering their voices into a constant human hum. The district didn't just house the city's heart; it was the heartbeat itself. Its motto is casual, almost defiant: \"We'll figure it out.\"\n\nNow the lockdown has changed things. The pride remains, but it's tempered with something harder — wariness, closed ranks, a quiet grief for what was. At its best, Lanternward is a community holding together. At its worst, old petty rivalries fester and the ugliness that the open chaos once drowned out has gone underground, where it festers quietly.",
     locations: [
       {
-        name: "The Amber Archive",
+        name: "Market Street",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+          "The widest, most direct route to the Airship dock. An eclectic jumble of shops, styles, and desperate cheer. At its centre, a permanent 360-degree theatrical stage where performers once entertained packed crowds. Now it hosts propaganda speeches and public executions. The locals watch with disgust they've learned to hide.",
       },
       {
-        name: "Lantern Market",
+        name: "Artists' Bottleneck (\"The Neck\")",
         description:
-          "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+          "An accidental square near Bramblecourt, created by poor city planning. Became a clandestine graffiti spot, then something more. Businesses and homeowners adjacent to it voluntarily gave up portions of their property to create permanent access for artists and visitors. The community maintains it together — a small act of collective defiance.",
       },
       {
-        name: "The Gilded Threshold",
+        name: "The Dapper Goblin",
         description:
-          "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+          "Griv's pub. Warm, welcoming, a gathering place for those who remember better times. Second only to the Gilded Tankard in popularity, first in genuine affection.",
+      },
+      {
+        name: "Rose's Pub",
+        description:
+          "Name TBD. A quiet, well-loved establishment whose basement holds one of the most carefully hidden entrances to the Underflow. A site of quiet resistance.",
+      },
+      {
+        name: "The Crossroads Cistern",
+        description:
+          "Located beneath the main Market Street stage. Originally allowed performers to prepare for surprise theatrical reveals. Now the most obvious entrance to the Underflow — and a growing liability.",
       },
     ],
     npcs: [
       {
-        name: "Maren Ashveil",
-        role: "Archivist",
+        name: "Grivbac \"Griv\" Clothmane",
+        role: "Proprietor, The Dapper Goblin",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+          "A goblin who left his family's tailoring business to open his own pub with community support. Universally charming, genuinely kind. Rumors swirl about his family's unusual longevity — rumors that could have turned dark long ago if Griv weren't so impossibly likable.",
       },
       {
-        name: "Torvan Crucke",
-        role: "Market Overseer",
+        name: "Rose",
+        role: "Pub Owner & Resistance Contact",
         description:
-          "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.",
+          "Details TBD. Beloved by the community. Her pub's basement holds a hidden entrance to the Underflow, making her one of the most quietly important figures in the district's resistance network.",
+      },
+      {
+        name: "The Pickers",
+        role: "Gang of orphaned scavengers",
+        description:
+          "A loose collective of orphaned children who scavenge waste areas for discarded archanotech, repairing and repurposing it with surprising skill. Tolerated and quietly protected by many locals. A point of pride for the community.",
+      },
+      {
+        name: "The Propagandist",
+        role: "Former professor, government mouthpiece",
+        description:
+          "A former university professor who now speaks publicly in favour of the government's imperial shift. His presence at the Market Street stage is a daily reminder of what's been lost. The most despised figure in the district.",
       },
     ],
     gmNotes:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. The hidden truth of this district is that lorem ipsum dolor sit amet, quis nostrud exercitation ullamco laboris.",
+      "Friction with Blast Block: the industrial district presses against Lanternward's edges, its guilds trying to claim land and manipulate property values. Near the border, Lanternward grows rough and neglected — gangs operate there with near-impunity. Internal tensions remain from old merchant rivalries, now suppressed by the lockdown but still simmering. Trust is harder to earn. Outsiders are viewed with suspicion. The worst-case scenario the community fears: a full lockdown sweep, guards ransacking homes, dragging away suspected collaborators.",
     gmSecrets:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+      "The Underflow in Lanternward: The Crossroads Cistern beneath Market Street is the obvious entrance — everyone knows it exists, and it's a liability. Rose's pub basement is the hidden one, carefully maintained and known only to trusted resistance members. The People's Sword uses the Lanternward Underflow network as their primary operational base. The resistance lives, literally, beneath the community's feet.",
   },
   {
     id: "bramblecourt",

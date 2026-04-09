@@ -32,7 +32,11 @@ export const DistrictCard: React.FC<DistrictCardProps> = ({
         </div>
       </div>
 
-      <p className="district-description">{district.description}</p>
+      <div className="district-description">
+        {district.description.split("\n\n").map((para, i) => (
+          <p key={i}>{para}</p>
+        ))}
+      </div>
 
       <div className="district-section">
         <h4 className="district-section-title">

@@ -2,9 +2,12 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--border-secondary);
 }
 
 .rules-content h1 {
